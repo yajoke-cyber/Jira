@@ -1,6 +1,15 @@
-import React from 'react';
+
 import logo from './logo.svg';
 import './App.css';
+import {cleanObj} from 'utils';
+// const API_URL = process.env.REACT_APP_API_URL
+
+let obj ={
+  name:'',
+  id:0,
+  content:'1234'
+}
+console.log(cleanObj(obj));
 
 function App() {
   return (
