@@ -1,30 +1,26 @@
+import { Form,Input,Button } from 'antd';
 import { useAuth } from 'context/auth-context'
-import { ProjectListScreen } from 'Pages/auth-app/project-list';
-import  { FormEvent, memo } from 'react'
-const RegisterScreen = memo(({changeScreen}:{changeScreen:Function}) => {
-  const {login,user}=useAuth();
-    const handleLogin=(e:FormEvent<HTMLFormElement>)=>{
-        e.preventDefault()
-        const username = (e.currentTarget.elements[0] as HTMLInputElement).value;
-        const password =(e.currentTarget.elements[1] as HTMLInputElement).value;
-       login({username,password})
-       
-    }
+
+import  {  memo } from 'react'
+const RegisterScreen = memo(() => {
+  const {register}=useAuth();
+  const handleRegister=(values:{username:string,password:string})=>{
+    console.log(values);
+    register(values);
+ }
   return (
-    <div>{
-    user?<ProjectListScreen/>:
-    <form onSubmit={handleLogin}>
-            <div>
-                <label htmlFor='username'>用户名</label>
-                <input type={'text'} id="username"></input>
-            </div>
-            <div> <label htmlFor='password'>密码</label>
-            <input type={'password'} id="password"></input>
-            </div>
-            <button type='submit'>注册</button>
-            <button onClick={()=>{changeScreen()}}>切换</button>
-        </form>}
-        
+    <div>
+    <Form  onFinish={handleRegister}>
+            <Form.Item label="Username" name={'username'} rules={[{required:true,message:'请输入用户名'}]}>
+            <Input placeholder='用户名' type={'text'} id="username" ></Input>
+            </Form.Item>
+            <Form.Item label="Password" name={'password'} rules={[{required:true,message:'请输入密码'}]}> 
+            <Input placeholder='密码' type={'password'} id="password"></Input>
+            </Form.Item>
+            <Form.Item style={{'textAlign':'center'}}>
+              <Button type={'primary'} htmlType="submit">注册</Button>
+            </Form.Item>
+            </Form>
     </div>
   )
 })

@@ -1,4 +1,6 @@
-.App {
-  padding-top: 20px;
-  text-align: center;
+html {
+  font-size: 62.5%;
+}
+html body #root .App {
+  min-height: 100vh;
 }
