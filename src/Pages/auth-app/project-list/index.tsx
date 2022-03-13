@@ -3,7 +3,7 @@ import { SearchPanel } from './search-panel'
 import { List } from './list'
 import {  cleanObj,useMount, useDebounce, useHttp } from 'utils'
 import { useAuth } from 'context/auth-context'
-import { Button, Dropdown, Menu } from 'antd'
+import {  Dropdown, Menu } from 'antd'
 import styled from 'styled-components'
 import { Row } from 'components/lib'
 // 使用 JS 的同学，大部分的错误都是在runtime（运行时）的时候发现的
@@ -47,7 +47,7 @@ export const ProjectListScreen = () => {
           </Menu.Item>
           </Menu>
         }> 
-         <a style={{'fontSize':'18px'}}>Hi,{user?.name}</a>
+         <a href='/#' style={{'fontSize':'18px'}}>Hi,{user?.name}</a>
           </Dropdown> 
       </HeaderRight>
       </Header>
