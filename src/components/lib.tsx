@@ -1,4 +1,5 @@
 
+import { Spin,Typography } from 'antd';
 import styled from 'styled-components';
 export const Row = styled.div<{
     gap ?:number|boolean,
@@ -16,3 +17,24 @@ export const Row = styled.div<{
         margin-right: ${props=>typeof props.gap ==='number'?props.gap+'rem':props.gap?'2rem':undefined};
         
 `
+export const FullPage=styled.div`
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+`
+export const FullPageSpin=()=>{
+    return (
+        <FullPage>
+        <Spin size='large'></Spin>
+    </FullPage>
+    )
+}
+export const FullPageError=({error}:{error:Error|null})=>{
+    return (
+        <FullPage>
+        <Typography.Text>{error?.message}</Typography.Text>
+    </FullPage>
+    )
+}
