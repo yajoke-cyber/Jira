@@ -4,33 +4,45 @@ import ProjectScreen from "Pages/auth-app/project";
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import PageHeader from "./header";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { useMount } from "utils";
+import { Provider } from "react-redux";
+import { store } from "store";
+import MyDrawer from "./project-list/drawer";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const AuthApp = memo(() => {
   const navigate = useNavigate();
   // useMount(() => {
   //   navigate("/projects");
   // });
+  const quertclient = new QueryClient();
   return (
-    <Container>
-      <Helmet>
-        <title>项目列表</title>
-      </Helmet>
-      <PageHeader />
-      <Nav></Nav>
-      <Main>
-        <Routes>
-          <Route path="/projects" element={<ProjectListScreen />}></Route>
-          <Route
-            path="/projects/:projectId/*"
-            element={<ProjectScreen />}
-          ></Route>
-        </Routes>
-      </Main>
-      <Aside></Aside>
-      <Footer></Footer>
-    </Container>
+    <QueryClientProvider client={quertclient}>
+      <Provider store={store}>
+        {/* redux所需要使用的provider */}
+        <MyDrawer></MyDrawer>
+        <Container>
+          <Helmet>
+            <title>项目列表</title>
+          </Helmet>
+          <PageHeader />
+          <Nav></Nav>
+          <Main>
+            <Routes>
+              <Route path="/projects" element={<ProjectListScreen />}></Route>
+              <Route
+                path="/projects/:projectId/*"
+                element={<ProjectScreen />}
+              ></Route>
+            </Routes>
+            {/* <Navigate to={"/projects"}></Navigate> */}
+          </Main>
+          <Aside></Aside>
+          <Footer></Footer>
+        </Container>
+      </Provider>
+    </QueryClientProvider>
   );
 });
 export default AuthApp;

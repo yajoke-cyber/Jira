@@ -1,16 +1,33 @@
-import { Dropdown, Menu, Button } from "antd";
+import { Dropdown, Menu, Button, Popover } from "antd";
 import { useAuth } from "context/auth-context";
 import { memo } from "react";
 import { Row } from "components/lib";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { projectListActions } from "../project-list/project-list.slice";
 const PageHeader = memo(() => {
+  const dispatch = useDispatch();
   const { user, logout } = useAuth();
   return (
     <>
       <Header between={true}>
         <HeaderLeft gap={true}>
           <h2>logo</h2>
-          <h2>项目</h2>
+          <Popover
+            content={
+              <Button
+                type="link"
+                onClick={() => {
+                  dispatch(projectListActions.openProjectModal());
+                }}
+              >
+                编辑项目
+              </Button>
+            }
+          >
+            <h2>项目</h2>
+          </Popover>
+
           <h2>用户</h2>
         </HeaderLeft>
         <HeaderRight>

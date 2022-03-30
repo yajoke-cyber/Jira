@@ -10,7 +10,6 @@ export const cleanObj = (obj: object) => {
   const res: any = { ...obj };
   Object.keys(obj).forEach((key) => {
     if (isFalsy(res[key])) {
-      console.log(key);
       delete res[key];
     }
   });

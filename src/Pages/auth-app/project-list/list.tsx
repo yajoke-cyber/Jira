@@ -1,8 +1,15 @@
-import { Table, TableProps } from "antd";
+import { Button, Table, TableProps } from "antd";
 import Pin from "components/pin";
 import { Link } from "react-router-dom";
 import { useHttp } from "utils";
 import { User } from "./search-panel";
+import {
+  useDeleteProject,
+  useProjectModal,
+  useProjectStar,
+} from "utils/project";
+import dayjs from "dayjs";
+import { useUrlQueryParam } from "utils/url";
 
 export interface Project {
   id: number;
@@ -16,7 +23,14 @@ interface ListProps extends TableProps<Project> {
   users: User[] | null;
 }
 export const List = ({ users, ...props }: ListProps) => {
-  const client = useHttp();
+  const [searchParams] = useUrlQueryParam(["name", "personId"]);
+  const queryKey = ["projects", searchParams];
+  const { startEdit } = useProjectModal();
+  const { mutateAsync: handleStar } = useProjectStar(queryKey);
+  const { mutateAsync: deleteProject } = useDeleteProject(queryKey);
+
+  //redux版本
+  //const dispatch = useDispatch();
   return (
     <Table
       loading
@@ -31,13 +45,10 @@ export const List = ({ users, ...props }: ListProps) => {
               <Pin
                 checked={value.pin}
                 // 这个垃圾serviceworker出问题了，每次就返回一个请求，气死
-                onCheckedChange={(data) => {
-                  client(`projects/${value.id}`, {
-                    method: "PATCH",
-                    data: !value.pin,
-                  }).then((res) => {
-                    console.log(res);
-                  });
+                onCheckedChange={() => {
+                  console.log(value);
+
+                  handleStar(value);
                 }}
               />
             );
@@ -67,7 +78,33 @@ export const List = ({ users, ...props }: ListProps) => {
         {
           title: "创建时间",
           render(value) {
-            return <span>{value.created} </span>;
+            return <span>{dayjs(value.created).format("YYYY-MM-DD")} </span>;
+          },
+        },
+        {
+          title: "编辑",
+          render(value) {
+            return (
+              <>
+                {" "}
+                <Button
+                  onClick={() => {
+                    startEdit(value.id);
+                  }}
+                >
+                  编辑
+                </Button>
+                <Button
+                  onClick={() => {
+                    deleteProject(value);
+                  }}
+                  danger
+                  style={{ marginLeft: "2rem" }}
+                >
+                  删除
+                </Button>
+              </>
+            );
           },
         },
       ]}

@@ -4,6 +4,7 @@ import { User } from "Pages/auth-app/project-list/search-panel";
 import { http } from "utils";
 import { useAsync } from "utils/use-async";
 import { FullPageError, FullPageSpin } from "components/lib";
+import { useQueryClient } from "react-query";
 const AuthContext = React.createContext<
   | undefined
   | {
@@ -30,9 +31,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     error,
     run,
   } = useAsync<User | null>();
+  // const queryClient = useQueryClient();
   const login = (data: UserForm) => Auth.login(data).then(setUser);
   const register = (data: UserForm) => Auth.register(data).then(setUser);
-  const logout = () => Auth.logout().then(() => setUser(null));
+  const logout = () =>
+    Auth.logout().then(() => {
+      //登出时清除缓存，防止其重新登录用户时会直接读取上一个用户的缓存，然后等到数据发送到以后才会更新最新的数据
+      setUser(null);
+      // queryClient.clear();
+    });
 
   //
 
