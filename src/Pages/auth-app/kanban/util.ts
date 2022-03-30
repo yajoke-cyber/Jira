@@ -6,11 +6,11 @@ export const useProjectIdInUrl = () => {
   return Number(id);
 };
 export const useProjectInUrl = () => useProject(useProjectIdInUrl());
-export const useKanbanSearchParams = () => ({
-  projectId: useKanbanSearchParams(),
-});
+// export const useKanbanSearchParams = () => ({
+//   projectId: useKanbanSearchParams(),
+// });
 export const useKanbanQueryKey = () => ["kanbans", useProjectIdInUrl()];
-export const useTasksSearchParams = () => ({
-  projectId: useTasksSearchParams(),
-});
+// export const useTasksSearchParams = () => ({
+//   projectId: useTasksSearchParams(),
+// });
 export const useTaskQueryKey = () => ["tasks", useProjectIdInUrl()];
